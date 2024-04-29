@@ -61,6 +61,7 @@ public class Main {
                 case "P":
                     break;
                 case "R":
+                    reportsScreen();
                     break;
                 case "H":
                     break;
@@ -68,5 +69,41 @@ public class Main {
                     System.out.println("Invalid Selection Made. Please Try Again.");
             }
         } while (!selection.equals("H"));
+    }
+
+    public static void reportsScreen(){
+        int selection;
+        // Reports Screen
+        do {
+            System.out.println("Welcome to the Reports Section!");
+            System.out.println("1) Month To Date");
+            System.out.println("2) Previous Month");
+            System.out.println("3) Year To Date");
+            System.out.println("4) Previous Year");
+            System.out.println("5) Search By Vendor");
+            System.out.println("6) Custom Search");
+            System.out.println("0) Back");
+            System.out.print("Please make a selection: ");
+            selection = scanner.nextInt();
+            scanner.nextLine();
+            switch (selection) {
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+                case 6:
+                    break;
+                case 0:
+                    break;
+                default:
+                    System.out.println("Invalid Selection Made. Please Try Again.");
+            }
+        } while (selection!=0);
     }
 }
