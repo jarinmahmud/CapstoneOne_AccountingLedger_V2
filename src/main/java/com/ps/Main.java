@@ -7,10 +7,13 @@ public class Main {
     static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
+        homeScreen();
+    }
+    public static void homeScreen(){
         String selection;
         // Home Screen
         do {
-            System.out.println("Welcome To The Accounting Ledger.");
+            System.out.println("Welcome To The Accounting Ledger Home Screen Menu.");
             System.out.println("D) Add Deposit");
             System.out.println("P) Make Payment (Debit)");
             System.out.println("L) Ledger Screen");
@@ -26,7 +29,7 @@ public class Main {
                     //makePayment();
                     break;
                 case "L":
-                    //LedgerScreen;
+                    ledgerScreen();
                     break;
                 case "X":
                     System.out.println("Thank you for using the Ledger Application!");
@@ -35,5 +38,35 @@ public class Main {
                     System.out.println("Invalid Selection Made. Please Try Again.");
             }
         } while (!selection.equals("X"));
+    }
+
+    public static void ledgerScreen(){
+        String selection;
+        // Ledger Screen
+        do {
+            System.out.println("Welcome to the Ledger Screen!");
+            System.out.println("A) All");
+            System.out.println("D) Deposits");
+            System.out.println("P) Payments");
+            System.out.println("R) Reports");
+            System.out.println("H) Home");
+            System.out.print("Please make a selection: ");
+            selection = scanner.next();
+
+            switch (selection) {
+                case "A":
+                    break;
+                case "D":
+                    break;
+                case "P":
+                    break;
+                case "R":
+                    break;
+                case "H":
+                    break;
+                default:
+                    System.out.println("Invalid Selection Made. Please Try Again.");
+            }
+        } while (!selection.equals("H"));
     }
 }
