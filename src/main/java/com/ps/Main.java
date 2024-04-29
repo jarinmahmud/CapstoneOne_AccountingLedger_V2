@@ -17,7 +17,23 @@ public class Main {
             System.out.println("X) Exit");
             System.out.print("Please make a selection: ");
             selection = scanner.next();
+
+            switch (selection){
+                case "D":
+                    //addDeposit();
+                    break;
+                case "P":
+                    //makePayment();
+                    break;
+                case "L":
+                    //LedgerScreen;
+                    break;
+                case "X":
+                    System.out.println("Thank you for using the Ledger Application!");
+                    break;
+                default:
+                    System.out.println("Invalid Selection Made. Please Try Again.");
+            }
         } while (!selection.equals("X"));
-        System.out.println("Thank you for using the Ledger Application!");
     }
 }
