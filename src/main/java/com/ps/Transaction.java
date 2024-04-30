@@ -63,8 +63,9 @@ public class Transaction {
         this.amount = amount;
     }
 
-    public static void writeHeaderToFile(String filename){
+    public static void writeHeaderToFile(){
         try {
+            String filename = "transactions.csv";
             BufferedWriter buffWriter = new BufferedWriter(new FileWriter(filename));
             buffWriter.write("date|time|description|vendor|amount");
             buffWriter.close();
@@ -74,8 +75,9 @@ public class Transaction {
         }
     }
 
-    public void writeToFile(String filename){
+    public void writeToFile(){
         try {
+            String filename = "transactions.csv";
             BufferedWriter buffWriter = new BufferedWriter(new FileWriter(filename, true));
             buffWriter.write(date + "|" + time + "|" + description + "|" + vendor + "|" + String.format("%.2f", amount));
             buffWriter.close();
