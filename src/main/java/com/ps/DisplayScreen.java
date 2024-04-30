@@ -3,12 +3,12 @@ package com.ps;
 import java.util.Scanner;
 
 public class DisplayScreen {
-    private final Scanner scanner = new Scanner(System.in);
+    private static final Scanner scanner = new Scanner(System.in);
 
     public DisplayScreen(){
     }
 
-    public void displayHomeScreen(){
+    public static void displayHomeScreen(){
         String selection;
         // Home Screen
         do {
@@ -39,7 +39,7 @@ public class DisplayScreen {
         } while (!selection.equals("X"));
     }
 
-    public void displayLedgerScreen(){
+    public static void displayLedgerScreen(){
         String selection;
         // Ledger Screen
         do {
@@ -70,7 +70,7 @@ public class DisplayScreen {
         } while (!selection.equals("H"));
     }
 
-    public void displayReportsScreen(){
+    public static void displayReportsScreen(){
         int selection;
         // Reports Screen
         do {
