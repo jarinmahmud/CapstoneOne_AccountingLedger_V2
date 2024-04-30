@@ -1,5 +1,8 @@
 package com.ps;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -58,6 +61,28 @@ public class Transaction {
 
     public void setAmount(double amount) {
         this.amount = amount;
+    }
+
+    public static void writeHeaderToFile(String filename){
+        try {
+            BufferedWriter buffWriter = new BufferedWriter(new FileWriter(filename));
+            buffWriter.write("date|time|description|vendor|amount");
+            buffWriter.close();
+        } catch (IOException e){
+            System.out.println("ERROR initiating header to file!");
+            e.printStackTrace();
+        }
+    }
+
+    public void writeToFile(String filename){
+        try {
+            BufferedWriter buffWriter = new BufferedWriter(new FileWriter(filename, true));
+            buffWriter.write(date + "|" + time + "|" + description + "|" + vendor + "|" + String.format("%.2f", amount));
+            buffWriter.close();
+        } catch (IOException e){
+            System.out.println("ERROR writing transaction to file!");
+            e.printStackTrace();
+        }
     }
 
     // Instance Output
