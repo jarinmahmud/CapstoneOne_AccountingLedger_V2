@@ -25,7 +25,7 @@ public class DisplayScreen {
                     TransactionHandler.addDeposit();
                     break;
                 case "P":
-                    //makePayment();
+                    TransactionHandler.makePayment();
                     break;
                 case "L":
                     displayLedgerScreen();

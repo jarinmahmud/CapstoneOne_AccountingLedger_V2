@@ -1,11 +1,9 @@
 package com.ps;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 public class Transaction {
     private LocalDate date;
@@ -93,9 +91,37 @@ public class Transaction {
             buffWriter.newLine();
             buffWriter.close();
         } catch (IOException e){
-            System.out.println("ERROR writing transaction to file!");
+            System.out.println("ERROR writing data to file!");
             e.printStackTrace();
         }
+    }
+
+    // Using List as it is preferred to convert to Linked later if ever necessary
+    public List<Transaction> readFromFile() {
+        String filename = "transactions.csv";
+        try {
+            BufferedReader buffReader = new BufferedReader(new FileReader(filename));
+
+            // Store each line from file into transaction
+            String input;
+
+            // Skip the first line, which is the header
+            buffReader.readLine();
+
+            while((input = buffReader.readLine()) != null){
+                String[] data = input.split("\\|");
+                LocalDate date;
+                LocalTime time;
+                String description;
+                String vendor;
+                double amount;
+            }
+        } catch (IOException e){
+            System.out.println("ERROR reading data from file!");
+            e.printStackTrace();
+        }
+        // TODO: TRY SORTING HERE!
+        return transactions;
     }
 
     // Instance Output

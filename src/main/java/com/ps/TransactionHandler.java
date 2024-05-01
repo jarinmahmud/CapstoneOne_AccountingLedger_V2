@@ -33,4 +33,5 @@ public class TransactionHandler {
         scanner.nextLine(); //
         return new Transaction(date, time, description, vendor, amount);
     }
+
 }
