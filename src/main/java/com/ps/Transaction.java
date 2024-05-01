@@ -1,6 +1,7 @@
 package com.ps;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -68,6 +69,7 @@ public class Transaction {
             String filename = "transactions.csv";
             BufferedWriter buffWriter = new BufferedWriter(new FileWriter(filename));
             buffWriter.write("date|time|description|vendor|amount");
+            buffWriter.newLine();
             buffWriter.close();
         } catch (IOException e){
             System.out.println("ERROR initiating header to file!");
@@ -79,7 +81,16 @@ public class Transaction {
         try {
             String filename = "transactions.csv";
             BufferedWriter buffWriter = new BufferedWriter(new FileWriter(filename, true));
+
+            // If new file, write header first
+            File file = new File(filename);
+            if (file.length() == 0) {
+                writeHeaderToFile();
+            }
+
+            // Write transaction
             buffWriter.write(date + "|" + time + "|" + description + "|" + vendor + "|" + String.format("%.2f", amount));
+            buffWriter.newLine();
             buffWriter.close();
         } catch (IOException e){
             System.out.println("ERROR writing transaction to file!");

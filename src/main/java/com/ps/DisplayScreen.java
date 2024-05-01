@@ -22,7 +22,7 @@ public class DisplayScreen {
 
             switch (selection){
                 case "D":
-                    //addDeposit();
+                    TransactionHandler.addDeposit();
                     break;
                 case "P":
                     //makePayment();
