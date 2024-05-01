@@ -3,6 +3,7 @@ package com.ps;
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Transaction {
@@ -97,26 +98,25 @@ public class Transaction {
     }
 
     // Using List as it is preferred to convert to Linked later if ever necessary
-    public List<Transaction> readFromFile() {
+    public static List<Transaction> readFromFile() {
         String filename = "transactions.csv";
+        List<Transaction> transactions = new ArrayList<>();
         try {
             BufferedReader buffReader = new BufferedReader(new FileReader(filename));
-
             // Store each line from file into transaction
             String input;
-
             // Skip the first line, which is the header
             buffReader.readLine();
-
             while((input = buffReader.readLine()) != null){
                 String[] data = input.split("\\|");
-                LocalDate date;
-                LocalTime time;
-                String description;
-                String vendor;
-                double amount;
+                LocalDate date = LocalDate.parse(data[0]);
+                LocalTime time = LocalTime.parse(data[1]);
+                String description = data[2];
+                String vendor = data[3];
+                double amount = Double.parseDouble(data[4]);
+                transactions.add(new Transaction(date, time, description, vendor, amount));
             }
-        } catch (IOException e){
+        } catch (IOException e) {
             System.out.println("ERROR reading data from file!");
             e.printStackTrace();
         }
