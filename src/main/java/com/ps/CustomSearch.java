@@ -47,9 +47,11 @@ public class CustomSearch {
         List<Transaction> searchResults = new ArrayList<>();
 
         for (Transaction transaction : transactions){
-            // Use contains here because we want to return any result that contains the input we give
-            // As we already have the search by value methods for specificities
-            if(transaction.getDescription().contains(input) ||
+            // Use contains here because we want to return any result that contains any portion of the input user gives
+            // This is because we already have methods for searching through specificities
+            if(String.valueOf(transaction.getDate()).contains(input) ||
+                    String.valueOf(transaction.getTime()).contains(input) ||
+                    transaction.getDescription().contains(input) ||
                     transaction.getVendor().contains(input) ||
                     // Convert amount of type double to String value
                     String.valueOf(transaction.getAmount()).contains(input)){

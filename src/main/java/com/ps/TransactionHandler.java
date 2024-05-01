@@ -66,4 +66,17 @@ public class TransactionHandler {
             }
         }
     }
+
+    public static List<Transaction> dateRangeTransactions(LocalDate startDate, LocalDate endDate){
+        List<Transaction> transactions = new ArrayList<>();
+        // load transactions
+        transactions = Transaction.readFromFile();
+        for (Transaction transaction : transactions){
+            // Doing the logic this way ensures start date and end date are included
+            if((!transaction.getDate().isBefore(startDate)) && (!transaction.getDate().isAfter(endDate))){
+                transactions.add(transaction);
+            }
+        }
+        return transactions;
+    }
 }
