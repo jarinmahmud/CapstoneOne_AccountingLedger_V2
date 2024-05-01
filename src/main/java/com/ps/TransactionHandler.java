@@ -44,4 +44,26 @@ public class TransactionHandler {
             System.out.println(transaction);
         }
     }
+
+    public static void displayOnlyDeposits(){
+        List<Transaction> transactions = new ArrayList<>();
+        // load transactions
+        transactions = Transaction.readFromFile();
+        for (Transaction transaction : transactions) {
+            if (transaction.getAmount() < 0){
+                System.out.println(transaction);
+            }
+        }
+    }
+
+    public static void displayOnlyPayments(){
+        List<Transaction> transactions = new ArrayList<>();
+        // load transactions
+        transactions = Transaction.readFromFile();
+        for (Transaction transaction : transactions) {
+            if (transaction.getAmount() > 0){
+                System.out.println(transaction);
+            }
+        }
+    }
 }

@@ -57,8 +57,10 @@ public class DisplayScreen {
                     TransactionHandler.displayAllTransactions();
                     break;
                 case "D":
+                    TransactionHandler.displayOnlyDeposits();
                     break;
                 case "P":
+                    TransactionHandler.displayOnlyPayments();
                     break;
                 case "R":
                     displayReportsScreen();
