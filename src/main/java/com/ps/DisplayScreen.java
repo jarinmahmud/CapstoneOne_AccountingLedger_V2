@@ -54,6 +54,7 @@ public class DisplayScreen {
 
             switch (selection) {
                 case "A":
+                    TransactionHandler.displayAllTransactions();
                     break;
                 case "D":
                     break;

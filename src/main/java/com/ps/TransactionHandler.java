@@ -2,6 +2,8 @@ package com.ps;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class TransactionHandler {
@@ -34,4 +36,12 @@ public class TransactionHandler {
         return new Transaction(date, time, description, vendor, amount);
     }
 
+    public static void displayAllTransactions(){
+        List<Transaction> transactions = new ArrayList<>();
+        // load transactions
+        transactions = Transaction.readFromFile();
+        for (Transaction transaction : transactions) {
+            System.out.println(transaction);
+        }
+    }
 }
