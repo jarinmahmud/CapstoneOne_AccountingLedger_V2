@@ -1,11 +1,15 @@
 package com.ps;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class CustomSearch {
-    private static final LocalDate date = LocalDate.now();
     private static final Scanner scanner = new Scanner(System.in);
+    private static final LocalDate date = LocalDate.now();
+    private static final List<Transaction> transactions = Transaction.readFromFile();
 
     // Simple Search Customizations
     public static void monthToDate(){
@@ -37,9 +41,22 @@ public class CustomSearch {
     }
 
     // Deeper Search Customization - BONUS
-    public static void randomValueSearch(){
+    public static List<Transaction> randomValueSearch(){
         System.out.println("Please enter search phrase: ");
-        String input = scanner.nextLine();
+        String input = scanner.nextLine().toLowerCase();
+        List<Transaction> searchResults = new ArrayList<>();
+
+        for (Transaction transaction : transactions){
+            // Use contains here because we want to return any result that contains the input we give
+            // As we already have the search by value methods for specificities
+            if(transaction.getDescription().contains(input) ||
+                    transaction.getVendor().contains(input) ||
+                    // Convert amount of type double to String value
+                    String.valueOf(transaction.getAmount()).contains(input)){
+                searchResults.add(transaction);
+            }
+        }
+        return searchResults;
     }
 
     public static void startDateSearch(){
@@ -52,18 +69,45 @@ public class CustomSearch {
         String input = scanner.nextLine();
     }
 
-    public static void searchByDescription(){
+    public static List<Transaction> searchByDescription(){
         System.out.println("Please enter description term: ");
         String input = scanner.nextLine();
+        List<Transaction> descriptionSearchResults = new ArrayList<>();
+
+        for (Transaction transaction : transactions){
+            // Use contains here for ability to search for sub phrase
+            if(transaction.getDescription().toLowerCase().contains(input)){
+                descriptionSearchResults.add(transaction);
+            }
+        }
+        return descriptionSearchResults;
     }
 
-    public static void searchByVendor(){
+    public static List<Transaction> searchByVendor(){
         System.out.println("Please enter name of vendor: ");
         String input = scanner.nextLine();
+        List<Transaction> vendorSearchResults = new ArrayList<>();
+
+        for (Transaction transaction : transactions){
+            // Use equals here (and not contains) to get exact vendor match
+            if(transaction.getVendor().equalsIgnoreCase(input)){
+                vendorSearchResults.add(transaction);
+            }
+        }
+        return vendorSearchResults;
     }
 
-    public static void searchByAmount(){
-        System.out.println("Please enter amount search: ");
+    public static List<Transaction> searchByAmount(){
+        System.out.println("Please enter value of amount: ");
         int input = scanner.nextInt();
+        List<Transaction> amountSearchResults = new ArrayList<>();
+
+        for (Transaction transaction : transactions){
+            // Get exact amount matching
+            if(transaction.getAmount() == input){
+                amountSearchResults.add(transaction);
+            }
+        }
+        return amountSearchResults;
     }
 }
