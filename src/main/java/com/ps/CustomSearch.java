@@ -61,14 +61,12 @@ public class CustomSearch {
         return searchResults;
     }
 
-    public static void startDateSearch(){
+    public static List<Transaction> searchByDateRange(){
         System.out.println("Please enter start date: ");
-        String input = scanner.nextLine();
-    }
-
-    public static void endDateSearch(){
+        LocalDate startDate = LocalDate.parse(scanner.nextLine());
         System.out.println("Please enter end date: ");
-        String input = scanner.nextLine();
+        LocalDate endDate = LocalDate.parse(scanner.nextLine());
+        return TransactionHandler.dateRangeTransactions(startDate, endDate);
     }
 
     public static List<Transaction> searchByDescription(){

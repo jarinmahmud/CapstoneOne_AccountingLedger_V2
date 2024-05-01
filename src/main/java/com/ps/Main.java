@@ -12,3 +12,4 @@ public class Main {
 // CSV FILE TYPE - use commas
 // OR
 // TXT FILE TYPE - pipeline ok
+//utilize trim (user inputs)
