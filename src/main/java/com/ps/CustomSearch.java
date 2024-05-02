@@ -1,5 +1,6 @@
 package com.ps;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.Scanner;
 public class CustomSearch {
     private static final Scanner scanner = new Scanner(System.in);
     private static final LocalDate date = LocalDate.now();
-    private static final List<Transaction> transactions = Transaction.readFromFile();
+    private static final List<Transaction> transactions = FileHandler.readFromFile();
 
     // Simple Search Customizations
     public static List<Transaction> monthToDate(){

@@ -1,5 +1,6 @@
 package com.ps;
 
+import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -12,13 +13,13 @@ public class TransactionHandler {
     public static void addDeposit(){
         System.out.println("Enter Deposit Details as follows:");
         Transaction transaction = createTransaction();
-        transaction.writeToFile();
+        FileHandler.writeToFile(transaction);
         System.out.println("Your Deposit has been added successfully.");
     }
     public static void makePayment(){
         System.out.println("Enter Payment Details as follows:");
         Transaction transaction = createTransaction();
-        transaction.writeToFile();
+        FileHandler.writeToFile(transaction);
         System.out.println("Your Payment has been added successfully.");
     }
     public static Transaction createTransaction(){
@@ -39,7 +40,7 @@ public class TransactionHandler {
     public static void displayAllTransactions(){
         List<Transaction> transactions = new ArrayList<>();
         // load transactions
-        transactions = Transaction.readFromFile();
+        transactions = FileHandler.readFromFile();
         for (Transaction transaction : transactions) {
             System.out.println(transaction);
         }
@@ -48,7 +49,7 @@ public class TransactionHandler {
     public static void displayOnlyDeposits(){
         List<Transaction> transactions = new ArrayList<>();
         // load transactions
-        transactions = Transaction.readFromFile();
+        transactions = FileHandler.readFromFile();
         for (Transaction transaction : transactions) {
             if (transaction.getAmount() < 0){
                 System.out.println(transaction);
@@ -59,7 +60,7 @@ public class TransactionHandler {
     public static void displayOnlyPayments(){
         List<Transaction> transactions = new ArrayList<>();
         // load transactions
-        transactions = Transaction.readFromFile();
+        transactions = FileHandler.readFromFile();
         for (Transaction transaction : transactions) {
             if (transaction.getAmount() > 0){
                 System.out.println(transaction);
@@ -70,7 +71,7 @@ public class TransactionHandler {
     public static List<Transaction> dateRangeTransactions(LocalDate startDate, LocalDate endDate){
         List<Transaction> transactions = new ArrayList<>();
         // load transactions
-        transactions = Transaction.readFromFile();
+        transactions = FileHandler.readFromFile();
         for (Transaction transaction : transactions){
             // Doing the logic this way ensures start date and end date are included
             if((!transaction.getDate().isBefore(startDate)) && (!transaction.getDate().isAfter(endDate))){
