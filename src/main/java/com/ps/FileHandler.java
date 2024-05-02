@@ -4,6 +4,7 @@ import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class FileHandler {
@@ -65,7 +66,8 @@ public class FileHandler {
             System.out.println("ERROR reading data from file!");
             e.printStackTrace();
         }
-        // TODO: TRY SORTING HERE!
+        // Sort by date, newest entry first
+        transactions.sort(Comparator.comparing(Transaction::getDate).reversed());
         return transactions;
     }
 }

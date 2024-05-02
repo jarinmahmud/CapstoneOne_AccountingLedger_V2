@@ -1,9 +1,13 @@
 package com.ps;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class DisplayScreen {
     private static final Scanner scanner = new Scanner(System.in);
+    private static final LocalDate date = LocalDate.now();
 
     public DisplayScreen(){
     }
@@ -74,6 +78,7 @@ public class DisplayScreen {
     }
 
     public static void displayReportsScreen(){
+        List<Transaction> transactions = new ArrayList<>();
         int selection;
         // Reports Screen
         do {
@@ -82,35 +87,87 @@ public class DisplayScreen {
             System.out.println("2) Previous Month");
             System.out.println("3) Year To Date");
             System.out.println("4) Previous Year");
-            System.out.println("5) Search By Vendor");
-            System.out.println("6) Custom Search");
+            System.out.println("5) Custom Search");
             System.out.println("0) Back");
             System.out.print("Please make a selection: ");
             selection = scanner.nextInt();
             scanner.nextLine();
             switch (selection) {
                 case 1:
-                    CustomSearch.monthToDate();
+                    LocalDate month = date.withDayOfMonth(1);
+                    transactions = TransactionHandler.dateRangeTransactions(month, date);
+                    TransactionHandler.printTransactions(transactions);
                     break;
                 case 2:
-                    CustomSearch.previousMonth();
+                    LocalDate prevMonthStart = date.minusMonths(1).withDayOfMonth(1);
+                    LocalDate prevMonthEnd = date.withDayOfMonth(1).minusDays(1);
+                    transactions = TransactionHandler.dateRangeTransactions(prevMonthStart, prevMonthEnd);
+                    TransactionHandler.printTransactions(transactions);
                     break;
                 case 3:
-                    CustomSearch.yearToDate();
+                    LocalDate year = date.withDayOfYear(1);
+                    transactions = TransactionHandler.dateRangeTransactions(year, date);
+                    TransactionHandler.printTransactions(transactions);
                     break;
                 case 4:
-                    CustomSearch.previousYear();
+                    LocalDate prevYearStart = date.minusYears(1).withDayOfYear(1);
+                    LocalDate prevYearEnd = date.withDayOfYear(1).minusDays(1);
+                    transactions = TransactionHandler.dateRangeTransactions(prevYearStart, prevYearEnd);
+                    TransactionHandler.printTransactions(transactions);
                     break;
                 case 5:
-                    CustomSearch.searchByVendor();
-                    break;
-                case 6:
+                    displayCustomSearch();
                     break;
                 case 0:
                     break;
                 default:
                     System.out.println("Invalid Selection Made. Please Try Again.");
             }
+        } while (selection!=0);
+    }
+
+    public static void displayCustomSearch() {
+        List<Transaction> transactions = new ArrayList<>();
+        int selection;
+        // Reports Screen
+        do {
+            System.out.println("Welcome to Custom Search!");
+            System.out.println("1) Any Value");
+            System.out.println("2) Date Range");
+            System.out.println("3) Description");
+            System.out.println("4) Vendor");
+            System.out.println("5) Amount");
+            System.out.println("0) Back");
+            System.out.print("Please make a selection: ");
+            selection = scanner.nextInt();
+
+            switch (selection) {
+                case 1:
+                    transactions = CustomSearch.randomValueSearch();
+                    TransactionHandler.printTransactions(transactions);
+                    break;
+                case 2:
+                    transactions = CustomSearch.searchByDateRange();
+                    TransactionHandler.printTransactions(transactions);
+                    break;
+                case 3:
+                    transactions = CustomSearch.searchByDescription();
+                    TransactionHandler.printTransactions(transactions);
+                    break;
+                case 4:
+                    transactions = CustomSearch.searchByVendor();
+                    TransactionHandler.printTransactions(transactions);
+                    break;
+                case 5:
+                    transactions = CustomSearch.searchByAmount();
+                    TransactionHandler.printTransactions(transactions);
+                    break;
+                case 0:
+                    break;
+                default:
+                    System.out.println("Invalid Selection Made. Please Try Again.");
+            }
+
         } while (selection!=0);
     }
 
