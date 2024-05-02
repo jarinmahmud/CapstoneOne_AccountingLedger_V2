@@ -21,7 +21,7 @@ public class DisplayScreen {
             System.out.println("L) Ledger Screen");
             System.out.println("X) Exit");
             System.out.print("Please make a selection: ");
-            selection = scanner.nextLine();
+            selection = scanner.nextLine().toUpperCase();
 
             switch (selection){
                 case "D":
@@ -53,7 +53,7 @@ public class DisplayScreen {
             System.out.println("R) Reports");
             System.out.println("H) Home");
             System.out.print("Please make a selection: ");
-            selection = scanner.nextLine();
+            selection = scanner.nextLine().toUpperCase();
 
             switch (selection) {
                 case "A":

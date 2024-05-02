@@ -12,7 +12,7 @@ public class CustomSearch {
     // Deeper Search Customization - BONUS
     public static List<Transaction> randomValueSearch(){
         System.out.println("Please enter search phrase: ");
-        String input = scanner.nextLine().toLowerCase();
+        String input = scanner.nextLine().trim().toLowerCase();
         List<Transaction> searchResults = new ArrayList<>();
 
         for (Transaction transaction : transactions){
@@ -33,9 +33,9 @@ public class CustomSearch {
     public static List<Transaction> searchByDateRange(){
         try {
             System.out.println("Please enter start date: ");
-            LocalDate startDate = LocalDate.parse(scanner.nextLine());
+            LocalDate startDate = LocalDate.parse(scanner.nextLine().trim());
             System.out.println("Please enter end date: ");
-            LocalDate endDate = LocalDate.parse(scanner.nextLine());
+            LocalDate endDate = LocalDate.parse(scanner.nextLine().trim());
             if (startDate.isAfter(endDate)) {
                 System.out.println("ERROR: Start date cannot be after end date.");
                 return null;
@@ -49,7 +49,7 @@ public class CustomSearch {
 
     public static List<Transaction> searchByDescription(){
         System.out.println("Please enter description term: ");
-        String input = scanner.nextLine().toLowerCase();
+        String input = scanner.nextLine().trim().toLowerCase();
         List<Transaction> descriptionSearchResults = new ArrayList<>();
 
         for (Transaction transaction : transactions){
@@ -63,7 +63,7 @@ public class CustomSearch {
 
     public static List<Transaction> searchByVendor(){
         System.out.println("Please enter name of vendor: ");
-        String input = scanner.nextLine();
+        String input = scanner.nextLine().trim();
         List<Transaction> vendorSearchResults = new ArrayList<>();
 
         for (Transaction transaction : transactions){

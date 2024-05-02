@@ -41,23 +41,23 @@ public class TransactionHandler {
 
         try {
             System.out.println("Enter Date: YYYY-MM-DD");
-            date = LocalDate.parse(scanner.nextLine());
+            date = LocalDate.parse(scanner.nextLine().trim());
         } catch (Exception e) {
             System.out.println("Invalid date format. Entering Current Date.");
         }
 
         try {
             System.out.println("Enter Time: HH-MM-SS");
-            time = LocalTime.parse(scanner.nextLine());
+            time = LocalTime.parse(scanner.nextLine().trim());
         } catch (Exception e) {
             System.out.println("Invalid time format. Entering Current Time.");
         }
 
         System.out.println("Enter Description: ");
-        description = scanner.nextLine();
+        description = scanner.nextLine().trim();
 
         System.out.println("Enter Vendor: ");
-        vendor = scanner.nextLine();
+        vendor = scanner.nextLine().trim();
 
         try {
             System.out.println("Enter Amount: ");
