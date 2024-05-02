@@ -2,6 +2,7 @@ package com.ps;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -32,8 +33,8 @@ public class TransactionHandler {
         }
     }
     public static Transaction createTransaction(){
-        LocalDate date;
-        LocalTime time;
+        LocalDate date = LocalDate.now();
+        LocalTime time = LocalTime.now().truncatedTo(ChronoUnit.SECONDS);
         String description;
         String vendor;
         double amount;
@@ -42,16 +43,14 @@ public class TransactionHandler {
             System.out.println("Enter Date: YYYY-MM-DD");
             date = LocalDate.parse(scanner.nextLine());
         } catch (Exception e) {
-            System.out.println("Invalid date format.");
-            return null;
+            System.out.println("Invalid date format. Entering Current Date.");
         }
 
         try {
             System.out.println("Enter Time: HH-MM-SS");
             time = LocalTime.parse(scanner.nextLine());
         } catch (Exception e) {
-            System.out.println("Invalid time format.");
-            return null;
+            System.out.println("Invalid time format. Entering Current Time.");
         }
 
         System.out.println("Enter Description: ");
