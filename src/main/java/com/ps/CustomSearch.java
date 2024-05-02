@@ -99,6 +99,7 @@ public class CustomSearch {
             return amountSearchResults;
         } catch (Exception e) {
             System.out.println("Invalid Input!");
+            scanner.nextLine();
             return null;
         }
     }

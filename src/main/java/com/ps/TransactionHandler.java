@@ -32,11 +32,11 @@ public class TransactionHandler {
         }
     }
     public static Transaction createTransaction(){
-        LocalDate date = null;
-        LocalTime time = null;
-        String description = null;
-        String vendor = null;
-        double amount = 0.0;
+        LocalDate date;
+        LocalTime time;
+        String description;
+        String vendor;
+        double amount;
 
         try {
             System.out.println("Enter Date: YYYY-MM-DD");
@@ -66,6 +66,7 @@ public class TransactionHandler {
             scanner.nextLine();
         } catch (Exception e) {
             System.out.println("Invalid Amount.");
+            scanner.nextLine();
             return null;
         }
         return new Transaction(date, time, description, vendor, amount);
