@@ -31,11 +31,20 @@ public class CustomSearch {
     }
 
     public static List<Transaction> searchByDateRange(){
-        System.out.println("Please enter start date: ");
-        LocalDate startDate = LocalDate.parse(scanner.nextLine());
-        System.out.println("Please enter end date: ");
-        LocalDate endDate = LocalDate.parse(scanner.nextLine());
-        return TransactionHandler.dateRangeTransactions(startDate, endDate);
+        try {
+            System.out.println("Please enter start date: ");
+            LocalDate startDate = LocalDate.parse(scanner.nextLine());
+            System.out.println("Please enter end date: ");
+            LocalDate endDate = LocalDate.parse(scanner.nextLine());
+            if (startDate.isAfter(endDate)) {
+                System.out.println("ERROR: Start date cannot be after end date.");
+                return null;
+            }
+            return TransactionHandler.dateRangeTransactions(startDate, endDate);
+        } catch (Exception e) {
+            System.out.println("Invalid Date Format.");
+            return null;
+        }
     }
 
     public static List<Transaction> searchByDescription(){
@@ -67,20 +76,30 @@ public class CustomSearch {
     }
 
     public static List<Transaction> searchByAmount(){
-        System.out.println("Please enter starting value of amount: ");
-        double inputStart = scanner.nextDouble();
-        scanner.nextLine();
-        System.out.println("Please enter ending value of amount: ");
-        double inputEnd = scanner.nextDouble();
-        scanner.nextLine();
-        List<Transaction> amountSearchResults = new ArrayList<>();
+        try {
+            System.out.println("Please enter starting value of amount: ");
+            double inputStart = scanner.nextDouble();
+            scanner.nextLine();
+            System.out.println("Please enter ending value of amount: ");
+            double inputEnd = scanner.nextDouble();
+            scanner.nextLine();
+            List<Transaction> amountSearchResults = new ArrayList<>();
 
-        for (Transaction transaction : transactions){
-            // Get range amount matching
-            if((transaction.getAmount() >= inputStart) && (transaction.getAmount() <= inputEnd)){
-                amountSearchResults.add(transaction);
+            if (inputStart > inputEnd) {
+                System.out.println("ERROR: Starting amount cannot be greater than ending amount.");
+                return null; // Handle invalid amount range
             }
+
+            for (Transaction transaction : transactions) {
+                // Get range amount matching
+                if ((transaction.getAmount() >= inputStart) && (transaction.getAmount() <= inputEnd)) {
+                    amountSearchResults.add(transaction);
+                }
+            }
+            return amountSearchResults;
+        } catch (Exception e) {
+            System.out.println("Invalid Input!");
+            return null;
         }
-        return amountSearchResults;
     }
 }

@@ -13,28 +13,61 @@ public class TransactionHandler {
     public static void addDeposit(){
         System.out.println("Enter Deposit Details as follows:");
         Transaction transaction = createTransaction();
-        FileHandler.writeToFile(transaction);
-        System.out.println("Your Deposit has been added successfully.");
+        if (transaction != null) {
+            FileHandler.writeToFile(transaction);
+            System.out.println("Your Deposit has been added successfully.");
+        } else {
+            System.out.println("Failed to add deposit.");
+        }
     }
     public static void makePayment(){
         System.out.println("Enter Payment Details as follows:");
         Transaction transaction = createTransaction();
-        transaction.setAmount(-Math.abs(transaction.getAmount()));
-        FileHandler.writeToFile(transaction);
-        System.out.println("Your Payment has been added successfully.");
+        if (transaction != null) {
+            transaction.setAmount(-Math.abs(transaction.getAmount()));
+            FileHandler.writeToFile(transaction);
+            System.out.println("Your Payment has been added successfully.");
+        } else {
+            System.out.println("Failed to add deposit.");
+        }
     }
     public static Transaction createTransaction(){
-        System.out.println("Enter Date: YYYY-MM-DD");
-        LocalDate date = LocalDate.parse(scanner.nextLine());
-        System.out.println("Enter Time: HH-MM-SS");
-        LocalTime time = LocalTime.parse(scanner.nextLine());
+        LocalDate date = null;
+        LocalTime time = null;
+        String description = null;
+        String vendor = null;
+        double amount = 0.0;
+
+        try {
+            System.out.println("Enter Date: YYYY-MM-DD");
+            date = LocalDate.parse(scanner.nextLine());
+        } catch (Exception e) {
+            System.out.println("Invalid date format.");
+            return null;
+        }
+
+        try {
+            System.out.println("Enter Time: HH-MM-SS");
+            time = LocalTime.parse(scanner.nextLine());
+        } catch (Exception e) {
+            System.out.println("Invalid time format.");
+            return null;
+        }
+
         System.out.println("Enter Description: ");
-        String description = scanner.nextLine();
+        description = scanner.nextLine();
+
         System.out.println("Enter Vendor: ");
-        String vendor = scanner.nextLine();
-        System.out.println("Enter Amount: ");
-        double amount = scanner.nextDouble();
-        scanner.nextLine(); //
+        vendor = scanner.nextLine();
+
+        try {
+            System.out.println("Enter Amount: ");
+            amount = scanner.nextDouble();
+            scanner.nextLine();
+        } catch (Exception e) {
+            System.out.println("Invalid Amount.");
+            return null;
+        }
         return new Transaction(date, time, description, vendor, amount);
     }
 

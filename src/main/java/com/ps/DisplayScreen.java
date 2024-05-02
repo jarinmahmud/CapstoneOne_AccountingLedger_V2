@@ -1,7 +1,7 @@
 package com.ps;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -78,8 +78,8 @@ public class DisplayScreen {
     }
 
     public static void displayReportsScreen(){
-        List<Transaction> transactions = new ArrayList<>();
-        int selection;
+        List<Transaction> transactions;
+        int selection = -1;
         // Reports Screen
         do {
             System.out.println("Welcome to the Reports Section!");
@@ -90,8 +90,15 @@ public class DisplayScreen {
             System.out.println("5) Custom Search");
             System.out.println("0) Back");
             System.out.print("Please make a selection: ");
-            selection = scanner.nextInt();
-            scanner.nextLine();
+            
+            try {
+                selection = scanner.nextInt();
+                scanner.nextLine();
+            } catch (Exception e) {
+                System.out.println("Invalid Input. Please enter numeric value.");
+                continue;
+            }
+            
             switch (selection) {
                 case 1:
                     LocalDate month = date.withDayOfMonth(1);
@@ -127,8 +134,8 @@ public class DisplayScreen {
     }
 
     public static void displayCustomSearch() {
-        List<Transaction> transactions = new ArrayList<>();
-        int selection;
+        List<Transaction> transactions;
+        int selection = -1;
         // Reports Screen
         do {
             System.out.println("Welcome to Custom Search!");
@@ -139,7 +146,14 @@ public class DisplayScreen {
             System.out.println("5) Amount");
             System.out.println("0) Back");
             System.out.print("Please make a selection: ");
-            selection = scanner.nextInt();
+
+            try {
+                selection = scanner.nextInt();
+                scanner.nextLine();
+            } catch (Exception e) {
+                System.out.println("Invalid Input. Please enter numeric value.");
+                continue;
+            }
 
             switch (selection) {
                 case 1:
@@ -148,7 +162,12 @@ public class DisplayScreen {
                     break;
                 case 2:
                     transactions = CustomSearch.searchByDateRange();
-                    TransactionHandler.printTransactions(transactions);
+                    if (transactions != null) {
+                        TransactionHandler.printTransactions(transactions);
+                    }
+                    else {
+                        System.out.println("Failed to load transactions.");
+                    }
                     break;
                 case 3:
                     transactions = CustomSearch.searchByDescription();
@@ -160,7 +179,11 @@ public class DisplayScreen {
                     break;
                 case 5:
                     transactions = CustomSearch.searchByAmount();
-                    TransactionHandler.printTransactions(transactions);
+                    if (transactions != null) {
+                        TransactionHandler.printTransactions(transactions);
+                    } else {
+                        System.out.println("Failed to load transactions.");
+                    }
                     break;
                 case 0:
                     break;
