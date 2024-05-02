@@ -8,7 +8,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public class FileHandler {
-    private static final String filename = "transactions.csv";
+    private static final String filename = "transactions.txt";
 
     public static void writeHeaderToFile(){
         try {
