@@ -67,13 +67,17 @@ public class CustomSearch {
     }
 
     public static List<Transaction> searchByAmount(){
-        System.out.println("Please enter value of amount: ");
-        double input = scanner.nextDouble();
+        System.out.println("Please enter starting value of amount: ");
+        double inputStart = scanner.nextDouble();
+        scanner.nextLine();
+        System.out.println("Please enter ending value of amount: ");
+        double inputEnd = scanner.nextDouble();
+        scanner.nextLine();
         List<Transaction> amountSearchResults = new ArrayList<>();
 
         for (Transaction transaction : transactions){
-            // Get exact amount matching
-            if(transaction.getAmount() == input){
+            // Get range amount matching
+            if((transaction.getAmount() >= inputStart) && (transaction.getAmount() <= inputEnd)){
                 amountSearchResults.add(transaction);
             }
         }
