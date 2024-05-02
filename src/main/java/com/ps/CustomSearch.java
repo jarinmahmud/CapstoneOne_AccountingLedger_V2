@@ -12,32 +12,36 @@ public class CustomSearch {
     private static final List<Transaction> transactions = Transaction.readFromFile();
 
     // Simple Search Customizations
-    public static void monthToDate(){
+    public static List<Transaction> monthToDate(){
         // Takes the current month and returns the date with the provided day of choice
         // In this case, use 1 to get the date for the first day of the current month
         LocalDate month = date.withDayOfMonth(1);
-        System.out.println(month);
+        //System.out.println(month);
+        return TransactionHandler.dateRangeTransactions(month, date);
     }
 
-    public static void previousMonth(){
+    public static List<Transaction> previousMonth(){
         // Returns the date with provided amount of months subtracted from current date
         // Then returns the date of that month with the provided day of choice
         // In this case, use 1 to subtract into the previous month from current date
         // Then 1 again to get the start date of that returned month
         LocalDate prevMonth = date.minusMonths(1).withDayOfMonth(1);
-        System.out.println(prevMonth);
+        //System.out.println(prevMonth);
+        return TransactionHandler.dateRangeTransactions(prevMonth, date);
     }
 
-    public static void yearToDate(){
+    public static List<Transaction> yearToDate(){
         // Similar logic as monthToDate method
         LocalDate year = date.withDayOfYear(1);
-        System.out.println(year);
+        //System.out.println(year);
+        return TransactionHandler.dateRangeTransactions(year, date);
     }
 
-    public static void previousYear(){
+    public static List<Transaction> previousYear(){
         // Similar logic as previousMonths method
-        LocalDate year = date.minusYears(1).withDayOfYear(1);
-        System.out.println(year);
+        LocalDate prevYear = date.minusYears(1).withDayOfYear(1);
+        //System.out.println(prevYear);
+        return TransactionHandler.dateRangeTransactions(prevYear, date);
     }
 
     // Deeper Search Customization - BONUS

@@ -90,14 +90,19 @@ public class DisplayScreen {
             scanner.nextLine();
             switch (selection) {
                 case 1:
+                    CustomSearch.monthToDate();
                     break;
                 case 2:
+                    CustomSearch.previousMonth();
                     break;
                 case 3:
+                    CustomSearch.yearToDate();
                     break;
                 case 4:
+                    CustomSearch.previousYear();
                     break;
                 case 5:
+                    CustomSearch.searchByVendor();
                     break;
                 case 6:
                     break;
