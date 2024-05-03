@@ -60,8 +60,8 @@ for (Transaction transaction : transactions){
 }
 ```
 
-## Images
-<img width="889" alt="Screenshot 2024-05-02 at 9 40 04 PM" src="https://github.com/nuhiii/CapstoneOne_AccountingLedger/assets/143645213/0f35a2d6-b24d-47ed-92f6-d9534139e5c6">
+## Course Through With Images
+<img width="882" alt="Screenshot 2024-05-02 at 10 27 09 PM" src="https://github.com/nuhiii/CapstoneOne_AccountingLedger/assets/143645213/bcc3fc22-983a-4d41-a893-1353513331df">
 <img width="889" alt="Screenshot 2024-05-02 at 9 40 20 PM" src="https://github.com/nuhiii/CapstoneOne_AccountingLedger/assets/143645213/89e84c22-fd14-4611-b9e8-23539eba4b98">
 <img width="889" alt="Screenshot 2024-05-02 at 9 53 49 PM" src="https://github.com/nuhiii/CapstoneOne_AccountingLedger/assets/143645213/cea2dc98-c271-4526-8741-9de76cc72394">
 <img width="889" alt="Screenshot 2024-05-02 at 9 55 27 PM" src="https://github.com/nuhiii/CapstoneOne_AccountingLedger/assets/143645213/99ab93e3-7471-4461-ad17-adeaf5e6be88">
