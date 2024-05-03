@@ -95,6 +95,7 @@ public class DisplayScreen {
                 scanner.nextLine();
             } catch (Exception e) {
                 System.out.println("Invalid Input. Please enter numeric value.");
+                scanner.nextLine();
                 continue;
             }
             
@@ -151,6 +152,7 @@ public class DisplayScreen {
                 scanner.nextLine();
             } catch (Exception e) {
                 System.out.println("Invalid Input. Please enter numeric value.");
+                scanner.nextLine();
                 continue;
             }
 
