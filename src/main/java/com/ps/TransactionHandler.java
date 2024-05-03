@@ -11,6 +11,7 @@ public class TransactionHandler {
     private static final Scanner scanner = new Scanner(System.in);
     private static final List<Transaction> transactions = FileHandler.readFromFile();
 
+    // Add Deposit - Positive Value
     public static void addDeposit(){
         System.out.println("Enter Deposit Details as follows:");
         Transaction transaction = createTransaction();
@@ -21,6 +22,8 @@ public class TransactionHandler {
             System.out.println("Failed to add deposit.");
         }
     }
+
+    // Make Payment - Negative Value
     public static void makePayment(){
         System.out.println("Enter Payment Details as follows:");
         Transaction transaction = createTransaction();
@@ -32,6 +35,8 @@ public class TransactionHandler {
             System.out.println("Failed to add deposit.");
         }
     }
+
+    // Create Individual Transaction from Deposit / Payment
     public static Transaction createTransaction(){
         LocalDate date = LocalDate.now();
         LocalTime time = LocalTime.now().truncatedTo(ChronoUnit.SECONDS);
@@ -71,6 +76,7 @@ public class TransactionHandler {
         return new Transaction(date, time, description, vendor, amount);
     }
 
+    // Print any list of transactions in a formatted way
     public static void printTransactions(List<Transaction> transactions){
         System.out.println("-----------------------------------------------------------------------------");
         System.out.println("\t\t\t\t\t\t\tTransactions:");
@@ -88,11 +94,13 @@ public class TransactionHandler {
         System.out.println("-----------------------------------------------------------------------------");
     }
 
+    // Print ALL transaction entries
     public static void displayAllTransactions(){
         List<Transaction> allTransactions = new ArrayList<>(transactions);
         printTransactions(allTransactions);
     }
 
+    // Show only Deposits
     public static void displayOnlyDeposits(){
         List<Transaction> onlyDeposits = new ArrayList<>();
         for (Transaction transaction : transactions) {
@@ -103,6 +111,7 @@ public class TransactionHandler {
         printTransactions(onlyDeposits);
     }
 
+    // Show only Payments
     public static void displayOnlyPayments(){
         List<Transaction> onlyPayments = new ArrayList<>();
         for (Transaction transaction : transactions) {
@@ -113,6 +122,7 @@ public class TransactionHandler {
         printTransactions(onlyPayments);
     }
 
+    // Return list of transactions with provided date range
     public static List<Transaction> dateRangeTransactions(LocalDate startDate, LocalDate endDate){
         List<Transaction> dateRange = new ArrayList<>();
         for (Transaction transaction : transactions){

@@ -10,6 +10,8 @@ public class CustomSearch {
     private static final List<Transaction> transactions = FileHandler.readFromFile();
 
     // Deeper Search Customization - BONUS
+
+    // Search by ANY value
     public static List<Transaction> randomValueSearch(){
         System.out.println("Please enter search phrase: ");
         String input = scanner.nextLine().trim().toLowerCase();
@@ -30,6 +32,7 @@ public class CustomSearch {
         return searchResults;
     }
 
+    // Search by user inputted date range
     public static List<Transaction> searchByDateRange(){
         try {
             System.out.println("Please enter start date: ");
@@ -47,6 +50,7 @@ public class CustomSearch {
         }
     }
 
+    // Search by Description, sub phrase appropriate
     public static List<Transaction> searchByDescription(){
         System.out.println("Please enter description term: ");
         String input = scanner.nextLine().trim().toLowerCase();
@@ -61,6 +65,7 @@ public class CustomSearch {
         return descriptionSearchResults;
     }
 
+    // Search by Vendor, exact matching only
     public static List<Transaction> searchByVendor(){
         System.out.println("Please enter name of vendor: ");
         String input = scanner.nextLine().trim();
@@ -75,6 +80,7 @@ public class CustomSearch {
         return vendorSearchResults;
     }
 
+    // Search between Amounts
     public static List<Transaction> searchByAmount(){
         try {
             System.out.println("Please enter starting value of amount: ");
@@ -87,11 +93,11 @@ public class CustomSearch {
 
             if (inputStart > inputEnd) {
                 System.out.println("ERROR: Starting amount cannot be greater than ending amount.");
-                return null; // Handle invalid amount range
+                return null;
             }
 
             for (Transaction transaction : transactions) {
-                // Get range amount matching
+                // Search between ranges inclusive
                 if ((transaction.getAmount() >= inputStart) && (transaction.getAmount() <= inputEnd)) {
                     amountSearchResults.add(transaction);
                 }

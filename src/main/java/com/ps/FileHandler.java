@@ -10,6 +10,7 @@ import java.util.List;
 public class FileHandler {
     private static final String filename = "transactions.txt";
 
+    // Writes Header to file
     public static void writeHeaderToFile(){
         try {
             BufferedWriter buffWriter = new BufferedWriter(new FileWriter(filename));
@@ -22,6 +23,7 @@ public class FileHandler {
         }
     }
 
+    // Writes transaction entries, checks for header
     public static void writeToFile(Transaction transaction){
         try {
             BufferedWriter buffWriter = new BufferedWriter(new FileWriter(filename, true));
@@ -44,6 +46,7 @@ public class FileHandler {
         }
     }
 
+    // Reads transaction entries from file, skipping over header
     // Using List as it is preferred to convert to Linked later if ever necessary
     public static List<Transaction> readFromFile() {
         List<Transaction> transactions = new ArrayList<>();

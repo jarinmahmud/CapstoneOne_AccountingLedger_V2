@@ -136,7 +136,7 @@ public class DisplayScreen {
     public static void displayCustomSearch() {
         List<Transaction> transactions;
         int selection = -1;
-        // Reports Screen
+        // Custom Search
         do {
             System.out.println("Welcome to Custom Search!");
             System.out.println("1) Any Value");
