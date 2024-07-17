@@ -1,55 +1,24 @@
 package com.ps;
 
-import java.io.*;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.sql.Time;
+import java.util.Date;
 
 public class Transaction {
-    private LocalDate date;
-    private LocalTime time;
+    private int id;
+    private Date date;
+    private Time time;
     private String description;
+    private String transactionType;
     private String vendor;
     private double amount;
 
-    // Constructor
-    public Transaction(LocalDate date, LocalTime time, String description, String vendor, double amount) {
-        this.date = date;
-        this.time = time;
-        this.description = description;
-        this.vendor = vendor;
+    public Transaction(double amount, Date date, String description, int id, Time time, String transactionType, String vendor) {
         this.amount = amount;
-    }
-
-    // Getter and Setter
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
         this.date = date;
-    }
-
-    public LocalTime getTime() {
-        return time;
-    }
-
-    public void setTime(LocalTime time) {
-        this.time = time;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getVendor() {
-        return vendor;
-    }
-
-    public void setVendor(String vendor) {
+        this.id = id;
+        this.time = time;
+        this.transactionType = transactionType;
         this.vendor = vendor;
     }
 
@@ -61,15 +30,64 @@ public class Transaction {
         this.amount = amount;
     }
 
-    // Instance Output
+    public java.sql.Date getDate() {
+        return (java.sql.Date) date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Time getTime() {
+        return time;
+    }
+
+    public void setTime(Time time) {
+        this.time = time;
+    }
+
+    public String getTransactionType() {
+        return transactionType;
+    }
+
+    public void setTransactionType(String transactionType) {
+        this.transactionType = transactionType;
+    }
+
+    public String getVendor() {
+        return vendor;
+    }
+
+    public void setVendor(String vendor) {
+        this.vendor = vendor;
+    }
+
     @Override
     public String toString() {
         return "Transaction{" +
-                "date=" + date +
-                ", time=" + time +
+                "amount=" + amount +
+                ", date=" + date +
                 ", description='" + description + '\'' +
+                ", id=" + id +
+                ", time=" + time +
+                ", transactionType='" + transactionType + '\'' +
                 ", vendor='" + vendor + '\'' +
-                ", amount=" + amount +
                 '}';
     }
 }

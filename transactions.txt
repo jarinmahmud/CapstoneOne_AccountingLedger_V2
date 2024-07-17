@@ -73,3 +73,4 @@ date|time|description|vendor|amount
 2023-04-24|13:45:00|Doctor's appointment|Medical Clinic|-150.00
 2024-05-02|21:36:46|Company Bonus|Google Research|1499.99
 2024-05-02|01:01|Programming Book|Pearson Education|-89.00
+2024-07-15|12:34:06|Checking|Chase|-1000.00
