@@ -1,5 +1,6 @@
 package com.ps;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
@@ -13,6 +14,7 @@ public class DisplayScreen {
 
     public static void displayHomeScreen(){
         String selection;
+
         // Home Screen
         do {
             System.out.println("Welcome To The Accounting Ledger Home Screen Menu.");
@@ -24,7 +26,7 @@ public class DisplayScreen {
 
             switch (selection){
                 case "T":
-                    TransactionHandler.addDeposit();
+                    TransactionHandler.createTransaction();
                     break;
                 case "L":
                     displayLedgerScreen();
@@ -45,7 +47,7 @@ public class DisplayScreen {
             System.out.println("Welcome to the Ledger Screen!");
             System.out.println("A) All");
             System.out.println("D) Deposits");
-            System.out.println("P) Payments");
+           // System.out.println("P) Payments");
             System.out.println("R) Reports");
             System.out.println("H) Home");
             System.out.print("Please make a selection: ");
@@ -53,17 +55,17 @@ public class DisplayScreen {
 
             switch (selection) {
                 case "A":
-                    TransactionHandler.displayAllTransactions();
+                    TransactionHandler.printTransactions();
                     break;
-                case "D":
-                    TransactionHandler.displayOnlyDeposits();
-                    break;
-                case "P":
-                    TransactionHandler.displayOnlyPayments();
-                    break;
-                case "R":
-                    displayReportsScreen();
-                    break;
+//                case "D":
+//                    TransactionHandler.displayOnlyDeposits();
+//                    break;
+//                case "P":
+//                    TransactionHandler.displayOnlyPayments();
+//                    break;
+//                case "R":
+//                    displayReportsScreen();
+//                    break;
                 case "H":
                     break;
                 default:
@@ -79,9 +81,9 @@ public class DisplayScreen {
         do {
             System.out.println("Welcome to the Reports Section!");
             System.out.println("1) Month To Date");
-            System.out.println("2) Previous Month");
+           // System.out.println("2) Previous Month");
             System.out.println("3) Year To Date");
-            System.out.println("4) Previous Year");
+            System.out.println("4) Search By Year");
             System.out.println("5) Custom Search");
             System.out.println("0) Back");
             System.out.print("Please make a selection: ");
@@ -97,29 +99,50 @@ public class DisplayScreen {
             
             switch (selection) {
                 case 1:
-                    LocalDate month = date.withDayOfMonth(1);
-                    transactions = TransactionHandler.dateRangeTransactions(month, date);
-                    TransactionHandler.printTransactions(transactions);
+                    MyTransactionDao.searchByThisMonth();
                     break;
-                case 2:
-                    LocalDate prevMonthStart = date.minusMonths(1).withDayOfMonth(1);
-                    LocalDate prevMonthEnd = date.withDayOfMonth(1).minusDays(1);
-                    transactions = TransactionHandler.dateRangeTransactions(prevMonthStart, prevMonthEnd);
-                    TransactionHandler.printTransactions(transactions);
-                    break;
+//                case 2:
+//                    LocalDate prevMonthStart = date.minusMonths(1).withDayOfMonth(1);
+//                    LocalDate prevMonthEnd = date.withDayOfMonth(1).minusDays(1);
+//                    transactions = TransactionHandler.dateRangeTransactions(prevMonthStart, prevMonthEnd);
+//                    TransactionHandler.printTransactions(transactions);
+//                    break;
                 case 3:
-                    LocalDate year = date.withDayOfYear(1);
-                    transactions = TransactionHandler.dateRangeTransactions(year, date);
-                    TransactionHandler.printTransactions(transactions);
+                    MyTransactionDao.searchByThisYear();
                     break;
                 case 4:
-                    LocalDate prevYearStart = date.minusYears(1).withDayOfYear(1);
-                    LocalDate prevYearEnd = date.withDayOfYear(1).minusDays(1);
-                    transactions = TransactionHandler.dateRangeTransactions(prevYearStart, prevYearEnd);
-                    TransactionHandler.printTransactions(transactions);
+                    MyTransactionDao.searchByThisYear();
                     break;
                 case 5:
-                    displayCustomSearch();
+                    Scanner scanner = new Scanner(System.in);
+                    System.out.print("Enter start year: ");
+                    int year = scanner.nextInt();
+
+                    System.out.print("Enter start month: ");
+                    int month = scanner.nextInt();
+
+                    System.out.print("Enter start day: ");
+                    int day = scanner.nextInt();
+
+                    LocalDate localDate = LocalDate.of(year, month, day);
+
+                    Date firstDate = Date.valueOf(localDate);
+
+                    System.out.print("Enter end year: ");
+                    int endYear = scanner.nextInt();
+
+                    System.out.print("Enter end month: ");
+                    int endMonth = scanner.nextInt();
+
+                    System.out.print("Enter end day: ");
+                    int endDay = scanner.nextInt();
+
+                    LocalDate lastDate = LocalDate.of(year, month, endDay);
+
+                    // Convert the LocalDate to java.sql.Date
+                    Date lastDay = Date.valueOf(lastDate);
+
+                   MyTransactionDao.searchByDateRange(firstDate, lastDay);
                     break;
                 case 0:
                     break;
@@ -129,66 +152,66 @@ public class DisplayScreen {
         } while (selection!=0);
     }
 
-    public static void displayCustomSearch() {
-        List<Transaction> transactions;
-        int selection = -1;
-        // Custom Search
-        do {
-            System.out.println("Welcome to Custom Search!");
-            System.out.println("1) Any Value");
-            System.out.println("2) Date Range");
-            System.out.println("3) Description");
-            System.out.println("4) Vendor");
-            System.out.println("5) Amount");
-            System.out.println("0) Back");
-            System.out.print("Please make a selection: ");
-
-            try {
-                selection = scanner.nextInt();
-                scanner.nextLine();
-            } catch (Exception e) {
-                System.out.println("Invalid Input. Please enter numeric value.");
-                scanner.nextLine();
-                continue;
-            }
-
-            switch (selection) {
-                case 1:
-                    transactions = CustomSearch.randomValueSearch();
-                    TransactionHandler.printTransactions(transactions);
-                    break;
-                case 2:
-                    transactions = CustomSearch.searchByDateRange();
-                    if (transactions != null) {
-                        TransactionHandler.printTransactions(transactions);
-                    }
-                    else {
-                        System.out.println("Failed to load transactions.");
-                    }
-                    break;
-                case 3:
-                    transactions = CustomSearch.searchByDescription();
-                    TransactionHandler.printTransactions(transactions);
-                    break;
-                case 4:
-                    transactions = CustomSearch.searchByVendor();
-                    TransactionHandler.printTransactions(transactions);
-                    break;
-                case 5:
-                    transactions = CustomSearch.searchByAmount();
-                    if (transactions != null) {
-                        TransactionHandler.printTransactions(transactions);
-                    } else {
-                        System.out.println("Failed to load transactions.");
-                    }
-                    break;
-                case 0:
-                    break;
-                default:
-                    System.out.println("Invalid Selection Made. Please Try Again.");
-            }
-
-        } while (selection!=0);
-    }
+//    public static void displayCustomSearch() {
+//        List<Transaction> transactions;
+//        int selection = -1;
+//        // Custom Search
+//        do {
+//            System.out.println("Welcome to Custom Search!");
+//            System.out.println("1) Any Value");
+//            System.out.println("2) Date Range");
+//            System.out.println("3) Description");
+//            System.out.println("4) Vendor");
+//            System.out.println("5) Amount");
+//            System.out.println("0) Back");
+//            System.out.print("Please make a selection: ");
+//
+//            try {
+//                selection = scanner.nextInt();
+//                scanner.nextLine();
+//            } catch (Exception e) {
+//                System.out.println("Invalid Input. Please enter numeric value.");
+//                scanner.nextLine();
+//                continue;
+//            }
+//
+//            switch (selection) {
+//                case 1:
+//                    transactions = CustomSearch.randomValueSearch();
+//                    TransactionHandler.printTransactions(transactions);
+//                    break;
+//                case 2:
+//                    transactions = CustomSearch.searchByDateRange();
+//                    if (transactions != null) {
+//                        TransactionHandler.printTransactions(transactions);
+//                    }
+//                    else {
+//                        System.out.println("Failed to load transactions.");
+//                    }
+//                    break;
+//                case 3:
+//                    transactions = CustomSearch.searchByDescription();
+//                    TransactionHandler.printTransactions(transactions);
+//                    break;
+//                case 4:
+//                    transactions = CustomSearch.searchByVendor();
+//                    TransactionHandler.printTransactions(transactions);
+//                    break;
+//                case 5:
+//                    transactions = CustomSearch.searchByAmount();
+//                    if (transactions != null) {
+//                        TransactionHandler.printTransactions(transactions);
+//                    } else {
+//                        System.out.println("Failed to load transactions.");
+//                    }
+//                    break;
+//                case 0:
+//                    break;
+//                default:
+//                    System.out.println("Invalid Selection Made. Please Try Again.");
+//            }
+//
+//        } while (selection!=0);
+//    }
 
 }

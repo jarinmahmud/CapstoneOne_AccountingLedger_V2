@@ -4,8 +4,10 @@ import org.apache.commons.dbcp2.BasicDataSource;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 
 public class MyTransactionDao extends MySqlDaoBase {
@@ -57,12 +59,15 @@ public class MyTransactionDao extends MySqlDaoBase {
         return transaction;
     }
 
-    public List<Transaction> searchByDateRange(Date firstDate , Date secondDate) {
+
+    // 5)
+    public static List<Transaction> searchByDateRange(Date firstDate, Date secondDate) {
         List <Transaction> transactions = new ArrayList<>();
+
         try (
                 Connection connection = dataSource.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(
-                        "SELECT * FROM transaction WHERE date BETWEEN ? AND ?"
+                        "SELECT * FROM transactions WHERE date BETWEEN ? AND ?"
                 );
         ) {
             preparedStatement.setDate(1, firstDate);
@@ -82,12 +87,129 @@ public class MyTransactionDao extends MySqlDaoBase {
         return transactions;
     }
 
+
+    // 1)
+    public static List<Transaction> searchByThisMonth() {
+        List <Transaction> transactions = new ArrayList<>();
+        try (
+                Connection connection = dataSource.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(
+                        "SELECT * FROM transactions WHERE date BETWEEN ? AND ?"
+                );
+        ) {
+            LocalDate localDate = LocalDate.now();
+            Date date = Date.valueOf(localDate);
+            int year = localDate.getYear();
+            int month = localDate.getMonthValue();
+
+            LocalDate firstDayOfMonth = LocalDate.of(year, month, 1);
+
+            // Convert the new LocalDate to java.sql.Date
+            Date firstDateOfMonth = Date.valueOf(firstDayOfMonth);
+
+            preparedStatement.setDate(1, firstDateOfMonth);
+            preparedStatement.setDate(2, date);
+
+            try (
+                    ResultSet resultSet = preparedStatement.executeQuery();
+            ) {
+                while (resultSet.next()) {
+                    Transaction transaction = generateTransactionFromRS(resultSet);
+                    transactions.add(transaction);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return transactions;
+    }
+
+    // 3)
+    public static List<Transaction> searchByThisYear() {
+        List <Transaction> transactions = new ArrayList<>();
+        try (
+                Connection connection = dataSource.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(
+                        "SELECT * FROM transactions WHERE date BETWEEN ? AND ?"
+                );
+        ) {
+            LocalDate localDate = LocalDate.now();
+            Date date = Date.valueOf(localDate);
+            int year = localDate.getYear();
+
+
+            LocalDate firstDayOfYear = LocalDate.of(year, 1, 1);
+
+            // Convert the new LocalDate to java.sql.Date
+            Date firstDay = Date.valueOf(firstDayOfYear);
+
+            preparedStatement.setDate(1, firstDay);
+            preparedStatement.setDate(2, date);
+
+            try (
+                    ResultSet resultSet = preparedStatement.executeQuery();
+            ) {
+                while (resultSet.next()) {
+                    Transaction transaction = generateTransactionFromRS(resultSet);
+                    transactions.add(transaction);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return transactions;
+    }
+
+    // 4)
+    public static List<Transaction> searchByYear() {
+        List <Transaction> transactions = new ArrayList<>();
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Which year would you like to search from?");
+        int year = scanner.nextInt();
+
+        try (
+                Connection connection = dataSource.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(
+                        "SELECT * FROM transactions WHERE date BETWEEN ? AND ?"
+                );
+        ) {
+
+
+
+
+            LocalDate firstDayOfYear = LocalDate.of(year, 1, 1);
+
+            // Convert the new LocalDate to java.sql.Date
+            Date firstDay = Date.valueOf(firstDayOfYear);
+            LocalDate lastDayOfYear = LocalDate.of(year,12, 31);
+            Date lastDay = Date.valueOf(lastDayOfYear);
+
+
+            preparedStatement.setDate(1, firstDay);
+            preparedStatement.setDate(2, lastDay);
+
+            try (
+                    ResultSet resultSet = preparedStatement.executeQuery();
+            ) {
+                while (resultSet.next()) {
+                    Transaction transaction = generateTransactionFromRS(resultSet);
+                    transactions.add(transaction);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return transactions;
+    }
+
+
+
     public List<Transaction> searchByDescription(String description) {
         List <Transaction> transactions = new ArrayList<>();
         try (
                 Connection connection = dataSource.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(
-                        "SELECT * FROM transaction WHERE description = ?"
+                        "SELECT * FROM transactions WHERE description = ?"
                 );
         ) {
             preparedStatement.setString(1,description);
@@ -112,7 +234,7 @@ public class MyTransactionDao extends MySqlDaoBase {
         try (
                 Connection connection = dataSource.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(
-                        "SELECT * FROM transaction WHERE vendor = ?"
+                        "SELECT * FROM transactions WHERE vendor = ?"
                 );
         ) {
             preparedStatement.setString(1, vendor);
@@ -137,7 +259,7 @@ public class MyTransactionDao extends MySqlDaoBase {
         try (
                 Connection connection = dataSource.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(
-                        "SELECT * FROM transaction WHERE amount = ?"
+                        "SELECT * FROM transactions WHERE amount = ?"
                 );
         ) {
             preparedStatement.setString(1,amount);
@@ -159,7 +281,7 @@ public class MyTransactionDao extends MySqlDaoBase {
 
 
 
-    public Transaction generateTransactionFromRS(ResultSet resultSet) throws SQLException {
+    public static Transaction generateTransactionFromRS(ResultSet resultSet) throws SQLException {
         int id = resultSet.getInt("transaction_id");
         Date date = resultSet.getDate("date");
         Time transaction = resultSet.getTime("time");

@@ -1,5 +1,10 @@
 package com.ps;
 
+import org.apache.commons.dbcp2.BasicDataSource;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.Time;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -15,31 +20,32 @@ import java.util.Scanner;
 public class TransactionHandler {
     private static final Scanner scanner = new Scanner(System.in);
     private static final List<Transaction> transactions = FileHandler.readFromFile();
+    private static BasicDataSource dataSource;
 
-    // Add Deposit - Positive Value
-    public static void addDeposit() {
-        System.out.println("Enter Deposit Details as follows:");
-        Transaction transaction = createTransaction();
-        if (transaction != null) {
-            FileHandler.writeToFile(transaction);
-            System.out.println("Your Deposit has been added successfully.");
-        } else {
-            System.out.println("Failed to add deposit.");
-        }
-    }
-
-    // Make Payment - Negative Value
-    public static void makePayment() {
-        System.out.println("Enter Payment Details as follows:");
-        Transaction transaction = createTransaction();
-        if (transaction != null) {
-            transaction.setAmount(-Math.abs(transaction.getAmount()));
-            FileHandler.writeToFile(transaction);
-            System.out.println("Your Payment has been added successfully.");
-        } else {
-            System.out.println("Failed to add deposit.");
-        }
-    }
+//    // Add Deposit - Positive Value
+//    public static void addDeposit() {
+//        System.out.println("Enter Deposit Details as follows:");
+//        Transaction transaction = createTransaction();
+//        if (transaction != null) {
+//            FileHandler.writeToFile(transaction);
+//            System.out.println("Your Deposit has been added successfully.");
+//        } else {
+//            System.out.println("Failed to add deposit.");
+//        }
+//    }
+//
+//    // Make Payment - Negative Value
+//    public static void makePayment() {
+//        System.out.println("Enter Payment Details as follows:");
+//        Transaction transaction = createTransaction();
+//        if (transaction != null) {
+//            transaction.setAmount(-Math.abs(transaction.getAmount()));
+//            FileHandler.writeToFile(transaction);
+//            System.out.println("Your Payment has been added successfully.");
+//        } else {
+//            System.out.println("Failed to add deposit.");
+//        }
+//    }
 
     // Create Individual Transaction from Deposit / Payment
     public static Transaction createTransaction() {
@@ -60,6 +66,7 @@ public class TransactionHandler {
 
         } catch (Exception e) {
             System.out.println("Invalid date format. Entering Current Date.");
+            date = new Date();
         }
 
         Time time = null;
@@ -73,6 +80,7 @@ public class TransactionHandler {
 
         } catch (Exception e) {
             System.out.println("Invalid time format. Entering Current Time.");
+            time = new Time(System.currentTimeMillis());
         }
 
         System.out.println("Enter Description: ");
@@ -101,50 +109,68 @@ public class TransactionHandler {
     }
 
     // Print any list of transactions in a formatted way
-    public static void printTransactions(List<Transaction> transactions) {
+    public static void printTransactions() {
         System.out.println("-----------------------------------------------------------------------------");
         System.out.println("\t\t\t\t\t\t\tTransactions:");
         System.out.println("-----------------------------------------------------------------------------");
-        System.out.printf("%-12s %-10s %-25s %-20s %10s%n",
-                "Date", "Time", "Description", "Vendor", "Amount");
+        System.out.printf("%-10s %-12s %-10s %-25s %-12s %-20s %10s%n",
+                "id","Date", "Time", "Description", "transactionType", "Vendor", "Amount");
         System.out.println("-----------------------------------------------------------------------------");
 
-        for (Transaction transaction : transactions) {
-            System.out.printf("%-12s %-10s %-25s %-20s $%.2f%n",
-                    transaction.getDate(), transaction.getTime(),
-                    transaction.getDescription(), transaction.getVendor(),
-                    transaction.getAmount());
-        }
-        System.out.println("-----------------------------------------------------------------------------");
-    }
+        try (
+                Connection connection = dataSource.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(
+                        "SELECT * FROM transactions"
+                );
+        ) {
 
-    // Print ALL transaction entries
-    public static void displayAllTransactions() {
-        List<Transaction> allTransactions = new ArrayList<>(transactions);
-        printTransactions(allTransactions);
-    }
 
-    // Show only Deposits
-    public static void displayOnlyDeposits() {
-        List<Transaction> onlyDeposits = new ArrayList<>();
-        for (Transaction transaction : transactions) {
-            if (transaction.getAmount() > 0) {
-                onlyDeposits.add(transaction);
+            try (
+                    ResultSet resultSet = preparedStatement.executeQuery();
+            ) {
+                while (resultSet.next()) {
+                    for (Transaction transaction : transactions) {
+                        System.out.printf("-10s %-12s %-10s %-25s %-12s %-20s %10s%n",
+                                transaction.getId(),transaction.getDate(), transaction.getTime(),
+                                transaction.getDescription(), transaction.getTransactionType(),
+                                transaction.getVendor(),transaction.getAmount());
+                    }
+                    System.out.println("-----------------------------------------------------------------------------");
+
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        printTransactions(onlyDeposits);
     }
 
-    // Show only Payments
-    public static void displayOnlyPayments() {
-        List<Transaction> onlyPayments = new ArrayList<>();
-        for (Transaction transaction : transactions) {
-            if (transaction.getAmount() < 0) {
-                onlyPayments.add(transaction);
-            }
-        }
-        printTransactions(onlyPayments);
-    }
+//    // Print ALL transaction entries
+//    public static void displayAllTransactions() {
+//        List<Transaction> allTransactions = new ArrayList<>(transactions);
+//        printTransactions(allTransactions);
+//    }
+
+//    // Show only Deposits
+//    public static void displayOnlyDeposits() {
+//        List<Transaction> onlyDeposits = new ArrayList<>();
+//        for (Transaction transaction : transactions) {
+//            if (transaction.getAmount() > 0) {
+//                onlyDeposits.add(transaction);
+//            }
+//        }
+//        printTransactions(onlyDeposits);
+//    }
+
+//    // Show only Payments
+//    public static void displayOnlyPayments() {
+//        List<Transaction> onlyPayments = new ArrayList<>();
+//        for (Transaction transaction : transactions) {
+//            if (transaction.getAmount() < 0) {
+//                onlyPayments.add(transaction);
+//            }
+//        }
+//        printTransactions(onlyPayments);
+//    }
 
     // Return list of transactions with provided date range
 //    public static List<Transaction> dateRangeTransactions(LocalDate startDate, LocalDate endDate){
