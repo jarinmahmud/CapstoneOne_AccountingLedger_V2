@@ -16,19 +16,15 @@ public class DisplayScreen {
         // Home Screen
         do {
             System.out.println("Welcome To The Accounting Ledger Home Screen Menu.");
-            System.out.println("D) Add Deposit");
-            System.out.println("P) Make Payment (Debit)");
+            System.out.println("T) Add Transaction");
             System.out.println("L) Ledger Screen");
             System.out.println("X) Exit");
             System.out.print("Please make a selection: ");
             selection = scanner.nextLine().toUpperCase();
 
             switch (selection){
-                case "D":
+                case "T":
                     TransactionHandler.addDeposit();
-                    break;
-                case "P":
-                    TransactionHandler.makePayment();
                     break;
                 case "L":
                     displayLedgerScreen();

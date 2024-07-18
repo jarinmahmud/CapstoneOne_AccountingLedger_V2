@@ -6,10 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="248583d1-3904-4620-a921-b55cef7890e0" name="Changes" comment="Enhance user input usability with trim">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ps/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ps/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ps/Transaction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ps/Transaction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/transactions.txt" beforeDir="false" afterPath="$PROJECT_DIR$/transactions.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ps/DisplayScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ps/DisplayScreen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ps/MyTransactionDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ps/MyTransactionDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ps/TransactionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ps/TransactionHandler.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

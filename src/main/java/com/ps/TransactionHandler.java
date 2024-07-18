@@ -73,7 +73,9 @@ public class TransactionHandler {
             scanner.nextLine();
             return null;
         }
-        return new Transaction(date, time, description, vendor, amount);
+        Transaction transaction = MyTransactionDao.createTransaction(amount,date, description, id, time, transactionType, vendor)
+
+        return new Transaction(amount,date, description, id, time, transactionType, vendor);
     }
 
     // Print any list of transactions in a formatted way
