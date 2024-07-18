@@ -1,9 +1,14 @@
 package com.ps;
 
+import java.sql.Time;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
@@ -12,7 +17,7 @@ public class TransactionHandler {
     private static final List<Transaction> transactions = FileHandler.readFromFile();
 
     // Add Deposit - Positive Value
-    public static void addDeposit(){
+    public static void addDeposit() {
         System.out.println("Enter Deposit Details as follows:");
         Transaction transaction = createTransaction();
         if (transaction != null) {
@@ -24,7 +29,7 @@ public class TransactionHandler {
     }
 
     // Make Payment - Negative Value
-    public static void makePayment(){
+    public static void makePayment() {
         System.out.println("Enter Payment Details as follows:");
         Transaction transaction = createTransaction();
         if (transaction != null) {
@@ -37,23 +42,35 @@ public class TransactionHandler {
     }
 
     // Create Individual Transaction from Deposit / Payment
-    public static Transaction createTransaction(){
-        LocalDate date = LocalDate.now();
-        LocalTime time = LocalTime.now().truncatedTo(ChronoUnit.SECONDS);
+    public static Transaction createTransaction() {
         String description;
         String vendor;
         double amount;
 
+        Date date = null;
         try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             System.out.println("Enter Date: YYYY-MM-DD");
-            date = LocalDate.parse(scanner.nextLine().trim());
+            String input = scanner.nextLine().trim();
+            LocalDate localDate = LocalDate.parse(input, formatter);
+
+            Instant instant = localDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
+            // Convert Instant to java.sql.Date
+            date = Date.from(instant);
+
         } catch (Exception e) {
             System.out.println("Invalid date format. Entering Current Date.");
         }
 
+        Time time = null;
         try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm[:ss]");
             System.out.println("Enter Time: HH-MM-SS");
-            time = LocalTime.parse(scanner.nextLine().trim());
+            String input = scanner.nextLine().trim();
+            LocalTime localTime = LocalTime.parse(input, formatter);
+
+            time = Time.valueOf(localTime);
+
         } catch (Exception e) {
             System.out.println("Invalid time format. Entering Current Time.");
         }
@@ -64,6 +81,9 @@ public class TransactionHandler {
         System.out.println("Enter Vendor: ");
         vendor = scanner.nextLine().trim();
 
+        System.out.println("Enter type of transaction");
+        String transactionType = scanner.nextLine();
+
         try {
             System.out.println("Enter Amount: ");
             amount = scanner.nextDouble();
@@ -73,13 +93,15 @@ public class TransactionHandler {
             scanner.nextLine();
             return null;
         }
-        Transaction transaction = MyTransactionDao.createTransaction(amount,date, description, id, time, transactionType, vendor)
 
-        return new Transaction(amount,date, description, id, time, transactionType, vendor);
+        int id = -1;
+        Transaction transaction = new Transaction(amount, date, description, id, time, transactionType, vendor);
+
+        return new Transaction(amount, date, description, transaction.getId(), time, transactionType, vendor);
     }
 
     // Print any list of transactions in a formatted way
-    public static void printTransactions(List<Transaction> transactions){
+    public static void printTransactions(List<Transaction> transactions) {
         System.out.println("-----------------------------------------------------------------------------");
         System.out.println("\t\t\t\t\t\t\tTransactions:");
         System.out.println("-----------------------------------------------------------------------------");
@@ -97,16 +119,16 @@ public class TransactionHandler {
     }
 
     // Print ALL transaction entries
-    public static void displayAllTransactions(){
+    public static void displayAllTransactions() {
         List<Transaction> allTransactions = new ArrayList<>(transactions);
         printTransactions(allTransactions);
     }
 
     // Show only Deposits
-    public static void displayOnlyDeposits(){
+    public static void displayOnlyDeposits() {
         List<Transaction> onlyDeposits = new ArrayList<>();
         for (Transaction transaction : transactions) {
-            if (transaction.getAmount() > 0){
+            if (transaction.getAmount() > 0) {
                 onlyDeposits.add(transaction);
             }
         }
@@ -114,10 +136,10 @@ public class TransactionHandler {
     }
 
     // Show only Payments
-    public static void displayOnlyPayments(){
+    public static void displayOnlyPayments() {
         List<Transaction> onlyPayments = new ArrayList<>();
         for (Transaction transaction : transactions) {
-            if (transaction.getAmount() < 0){
+            if (transaction.getAmount() < 0) {
                 onlyPayments.add(transaction);
             }
         }
@@ -125,14 +147,14 @@ public class TransactionHandler {
     }
 
     // Return list of transactions with provided date range
-    public static List<Transaction> dateRangeTransactions(LocalDate startDate, LocalDate endDate){
-        List<Transaction> dateRange = new ArrayList<>();
-        for (Transaction transaction : transactions){
-            // Doing the logic this way ensures start date and end date are included
-            if((!transaction.getDate().isBefore(startDate)) && (!transaction.getDate().isAfter(endDate))){
-                dateRange.add(transaction);
-            }
-        }
-        return dateRange;
-    }
+//    public static List<Transaction> dateRangeTransactions(LocalDate startDate, LocalDate endDate){
+//        List<Transaction> dateRange = new ArrayList<>();
+//        for (Transaction transaction : transactions){
+//             Doing the logic this way ensures start date and end date are included
+//            if((!transaction.getDate().isBefore(startDate)) && (!transaction.getDate().isAfter(endDate))){
+//                dateRange.add(transaction);
+//            }
+//        }
+//        return dateRange;
+//    }
 }

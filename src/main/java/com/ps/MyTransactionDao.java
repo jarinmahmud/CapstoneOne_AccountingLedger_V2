@@ -3,7 +3,6 @@ package com.ps;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 import javax.sql.DataSource;
-import java.awt.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +17,8 @@ public class MyTransactionDao extends MySqlDaoBase {
 
     public static int createTransaction(Transaction transaction) {
         int id = -1;
-        try (Connection connection = dataSource.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO transactions(transaction_id, date, time, description, type_of_transaction" + "vendor, amount" + "VALUES (?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);) {
+        try (Connection connection = dataSource.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement
+                ("INSERT INTO transactions(transaction_id, date, time, description, type_of_transaction" + "vendor, amount" + "VALUES (?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);) {
             preparedStatement.setInt(1, transaction.getId());
             preparedStatement.setDate(2, transaction.getDate());
             preparedStatement.setTime(3, transaction.getTime());
@@ -62,7 +62,7 @@ public class MyTransactionDao extends MySqlDaoBase {
         try (
                 Connection connection = dataSource.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(
-                        "SELECT * FROM transaction WHERE odometer BETWEEN date ? AND ?"
+                        "SELECT * FROM transaction WHERE date BETWEEN ? AND ?"
                 );
         ) {
             preparedStatement.setDate(1, firstDate);
@@ -82,7 +82,7 @@ public class MyTransactionDao extends MySqlDaoBase {
         return transactions;
     }
 
-    public List<Transaction> searchByDescrption(String description) {
+    public List<Transaction> searchByDescription(String description) {
         List <Transaction> transactions = new ArrayList<>();
         try (
                 Connection connection = dataSource.getConnection();
