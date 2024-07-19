@@ -55,7 +55,7 @@ public class DisplayScreen {
             System.out.println("Welcome to the Ledger Screen!");
             System.out.println("A) All");
           //  System.out.println("D) Deposits")
-            System.out.println("R) Reports");
+          //  System.out.println("R) Reports");
             System.out.println("H) Home");
             System.out.print("Please make a selection: ");
             selection = scanner.nextLine().toUpperCase();
