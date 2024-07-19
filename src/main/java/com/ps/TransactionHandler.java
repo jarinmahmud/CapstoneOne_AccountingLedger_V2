@@ -1,85 +1,39 @@
 package com.ps;
 
-import org.apache.commons.dbcp2.BasicDataSource;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Time;
-import java.time.Instant;
+import java.math.BigDecimal;
+import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
 public class TransactionHandler {
     private static final Scanner scanner = new Scanner(System.in);
-    private static final List<Transaction> transactions = FileHandler.readFromFile();
-    private static BasicDataSource dataSource;
 
-//    // Add Deposit - Positive Value
-//    public static void addDeposit() {
-//        System.out.println("Enter Deposit Details as follows:");
-//        Transaction transaction = createTransaction();
-//        if (transaction != null) {
-//            FileHandler.writeToFile(transaction);
-//            System.out.println("Your Deposit has been added successfully.");
-//        } else {
-//            System.out.println("Failed to add deposit.");
-//        }
-//    }
-//
-//    // Make Payment - Negative Value
-//    public static void makePayment() {
-//        System.out.println("Enter Payment Details as follows:");
-//        Transaction transaction = createTransaction();
-//        if (transaction != null) {
-//            transaction.setAmount(-Math.abs(transaction.getAmount()));
-//            FileHandler.writeToFile(transaction);
-//            System.out.println("Your Payment has been added successfully.");
-//        } else {
-//            System.out.println("Failed to add deposit.");
-//        }
-//    }
-
-    // Create Individual Transaction from Deposit / Payment
     public static Transaction createTransaction() {
+        LocalDate date;
+        Time time;
         String description;
         String vendor;
-        double amount;
+        BigDecimal amount;
+        String transactionType;
 
-        Date date = null;
         try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             System.out.println("Enter Date: YYYY-MM-DD");
-            String input = scanner.nextLine().trim();
-            LocalDate localDate = LocalDate.parse(input, formatter);
-
-            Instant instant = localDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
-            // Convert Instant to java.sql.Date
-            date = Date.from(instant);
-
+            date = LocalDate.parse(scanner.nextLine().trim(), dateFormatter);
         } catch (Exception e) {
-            System.out.println("Invalid date format. Entering Current Date.");
-            date = new Date();
+            System.out.println("Invalid date format. Using Current Date.");
+            date = LocalDate.now();
         }
 
-        Time time = null;
         try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm[:ss]");
-            System.out.println("Enter Time: HH-MM-SS");
-            String input = scanner.nextLine().trim();
-            LocalTime localTime = LocalTime.parse(input, formatter);
-
-            time = Time.valueOf(localTime);
-
+            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+            System.out.println("Enter Time: HH:mm:ss");
+            time = Time.valueOf(LocalTime.parse(scanner.nextLine().trim(), timeFormatter));
         } catch (Exception e) {
-            System.out.println("Invalid time format. Entering Current Time.");
+            System.out.println("Invalid time format. Using Current Time.");
             time = new Time(System.currentTimeMillis());
         }
 
@@ -89,12 +43,12 @@ public class TransactionHandler {
         System.out.println("Enter Vendor: ");
         vendor = scanner.nextLine().trim();
 
-        System.out.println("Enter type of transaction");
-        String transactionType = scanner.nextLine();
+        System.out.println("Enter Type of Transaction: ");
+        transactionType = scanner.nextLine().trim();
 
         try {
             System.out.println("Enter Amount: ");
-            amount = scanner.nextDouble();
+            amount = scanner.nextBigDecimal();
             scanner.nextLine();
         } catch (Exception e) {
             System.out.println("Invalid Amount.");
@@ -102,85 +56,39 @@ public class TransactionHandler {
             return null;
         }
 
-        int id = -1;
-        Transaction transaction = new Transaction(amount, date, description, id, time, transactionType, vendor);
+        Transaction transaction = new Transaction(0, date, time.toLocalTime(), description, transactionType, vendor, amount);
+        MyTransactionDao.createTransaction(transaction);
 
-        return new Transaction(amount, date, description, transaction.getId(), time, transactionType, vendor);
+        return transaction;
     }
 
-    // Print any list of transactions in a formatted way
     public static void printTransactions() {
+        MyTransactionDao transactionDao = new MyTransactionDao(DatabaseHandler.getDataSource());
+        List<Transaction> transactions = MyTransactionDao.searchByDateRange(Date.valueOf("1900-01-01"), Date.valueOf(LocalDate.now()));
+
         System.out.println("-----------------------------------------------------------------------------");
         System.out.println("\t\t\t\t\t\t\tTransactions:");
         System.out.println("-----------------------------------------------------------------------------");
         System.out.printf("%-10s %-12s %-10s %-25s %-12s %-20s %10s%n",
-                "id","Date", "Time", "Description", "transactionType", "Vendor", "Amount");
+                "id", "Date", "Time", "Description", "transactionType", "Vendor", "Amount");
         System.out.println("-----------------------------------------------------------------------------");
 
-        try (
-                Connection connection = dataSource.getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(
-                        "SELECT * FROM transactions"
-                );
-        ) {
-
-
-            try (
-                    ResultSet resultSet = preparedStatement.executeQuery();
-            ) {
-                while (resultSet.next()) {
-                    for (Transaction transaction : transactions) {
-                        System.out.printf("-10s %-12s %-10s %-25s %-12s %-20s %10s%n",
-                                transaction.getId(),transaction.getDate(), transaction.getTime(),
-                                transaction.getDescription(), transaction.getTransactionType(),
-                                transaction.getVendor(),transaction.getAmount());
-                    }
-                    System.out.println("-----------------------------------------------------------------------------");
-
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        for (Transaction transaction : transactions) {
+            System.out.printf("%-10d %-12s %-10s %-25s %-12s %-20s %10.2f%n",
+                    transaction.getId(), transaction.getDate(), transaction.getTime(), transaction.getDescription(),
+                    transaction.getTransactionType(), transaction.getVendor(), transaction.getAmount());
         }
     }
 
-//    // Print ALL transaction entries
-//    public static void displayAllTransactions() {
-//        List<Transaction> allTransactions = new ArrayList<>(transactions);
-//        printTransactions(allTransactions);
-//    }
+    // Update transaction
+    public static void updateTransaction(Transaction transaction) {
+        MyTransactionDao.updateTransaction(transaction);
+    }
 
-//    // Show only Deposits
-//    public static void displayOnlyDeposits() {
-//        List<Transaction> onlyDeposits = new ArrayList<>();
-//        for (Transaction transaction : transactions) {
-//            if (transaction.getAmount() > 0) {
-//                onlyDeposits.add(transaction);
-//            }
-//        }
-//        printTransactions(onlyDeposits);
-//    }
+    // Delete transaction
+    public static void deleteTransaction(int transactionId) {
+        MyTransactionDao.deleteTransaction(transactionId);
+    }
 
-//    // Show only Payments
-//    public static void displayOnlyPayments() {
-//        List<Transaction> onlyPayments = new ArrayList<>();
-//        for (Transaction transaction : transactions) {
-//            if (transaction.getAmount() < 0) {
-//                onlyPayments.add(transaction);
-//            }
-//        }
-//        printTransactions(onlyPayments);
-//    }
 
-    // Return list of transactions with provided date range
-//    public static List<Transaction> dateRangeTransactions(LocalDate startDate, LocalDate endDate){
-//        List<Transaction> dateRange = new ArrayList<>();
-//        for (Transaction transaction : transactions){
-//             Doing the logic this way ensures start date and end date are included
-//            if((!transaction.getDate().isBefore(startDate)) && (!transaction.getDate().isAfter(endDate))){
-//                dateRange.add(transaction);
-//            }
-//        }
-//        return dateRange;
-//    }
 }

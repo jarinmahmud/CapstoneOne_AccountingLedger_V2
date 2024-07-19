@@ -6,8 +6,14 @@
   <component name="ChangeListManager">
     <list default="true" id="248583d1-3904-4620-a921-b55cef7890e0" name="Changes" comment="Enhance user input usability with trim">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ps/CustomSearch.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ps/CustomSearch.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ps/DatabaseHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ps/DatabaseHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/ps/DisplayScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ps/DisplayScreen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ps/FileHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ps/FileHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ps/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ps/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ps/MySqlDaoBase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ps/MySqlDaoBase.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/ps/MyTransactionDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ps/MyTransactionDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ps/Transaction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ps/Transaction.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/ps/TransactionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ps/TransactionHandler.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -52,6 +58,24 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\bfs43\LearnToCode\capstones\dddddddddddddddddddddd\src\main\resources" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -346,5 +370,16 @@
     <MESSAGE value="Include automatic option to enter local date and time if user inputs incorrect date and time format instead of returning error message" />
     <MESSAGE value="Enhance user input usability with trim" />
     <option name="LAST_COMMIT_MESSAGE" value="Enhance user input usability with trim" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/ps/Transaction.java</url>
+          <line>19</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

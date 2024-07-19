@@ -1,9 +1,10 @@
 package com.ps;
 
+import java.math.BigDecimal;
+import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Date;
 
 public class Transaction {
     private int id;
@@ -14,14 +15,14 @@ public class Transaction {
     private String vendor;
     private double amount;
 
-    public Transaction(double amount, Date date, String description, int id, Time time, String transactionType, String vendor) {
-        this.amount = amount;
-        this.date = date;
-        this.description = description;
+    public Transaction(int id, LocalDate date, LocalTime time, String description, String transactionType, String vendor, BigDecimal amount) {
         this.id = id;
-        this.time = time;
+        this.date = Date.valueOf(date);
+        this.time = (time != null) ? Time.valueOf(time) : null;
+        this.description = description;
         this.transactionType = transactionType;
         this.vendor = vendor;
+        this.amount = amount.doubleValue();
     }
 
     public double getAmount() {
@@ -32,12 +33,20 @@ public class Transaction {
         this.amount = amount;
     }
 
-    public java.sql.Date getDate() {
-        return (java.sql.Date) date;
+    public Date getDate() {
+        return date;
     }
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public Time getTime() {
+        return time;
+    }
+
+    public void setTime(Time time) {
+        this.time = time;
     }
 
     public String getDescription() {
@@ -54,14 +63,6 @@ public class Transaction {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public Time getTime() {
-        return time;
-    }
-
-    public void setTime(Time time) {
-        this.time = time;
     }
 
     public String getTransactionType() {
