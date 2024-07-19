@@ -64,7 +64,7 @@ public class DisplayScreen {
                 case "A":
                     TransactionHandler.printTransactions();
                     break;
-                case "R":
+             //   case "R":
              //       displayReportsScreen();
                 case "H":
                     break;
